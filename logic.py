@@ -102,6 +102,7 @@ class Logic(QMainWindow, Ui_MainWindow):
                     rand_col = randint(0, self.cols - 1)
 
                 self.board_nums[rand_row][rand_col] = 'x'
+                # This shit is temp
                 self.board[rand_row][rand_col].setIcon(QtGui.QIcon('Dizzy Face Emoji.png'))
 
 
