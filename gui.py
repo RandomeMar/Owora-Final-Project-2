@@ -174,8 +174,11 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.input_row.setText(_translate("MainWindow", "10"))
         self.input_row.setPlaceholderText(_translate("MainWindow", "Rows"))
+        self.input_col.setText(_translate("MainWindow", "10"))
         self.input_col.setPlaceholderText(_translate("MainWindow", "Columns"))
+        self.input_bomb.setText(_translate("MainWindow", "13"))
         self.input_bomb.setPlaceholderText(_translate("MainWindow", "Bombs"))
         self.button_gen.setText(_translate("MainWindow", "Generate"))
         self.radio_flag.setText(_translate("MainWindow", "Flag"))
