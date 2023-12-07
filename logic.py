@@ -8,7 +8,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
 
-        # These are not the defaults. Defaults are 10, 10, and 13
+        # these are not the defaults. Defaults are 10, 10, and 13
         self.rows = 1
         self.cols = 1
         self.bombs = 1
