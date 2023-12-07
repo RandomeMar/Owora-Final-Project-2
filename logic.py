@@ -8,7 +8,7 @@ class Logic(QMainWindow, Ui_MainWindow):
         super().__init__()
         self.setupUi(self)
 
-        # These are not the defaults. Defaults are 10, 10, and 13
+        # these are not the defaults. Defaults are 10, 10, and 13
         self.rows = 1
         self.cols = 1
         self.bombs = 1
@@ -54,7 +54,31 @@ class Logic(QMainWindow, Ui_MainWindow):
 
         Todo: If a space is flagged, do nothing
         """
-        pass
+        clicked_button = self.sender()
+
+        row, col = self.get_button_position(space)
+
+        if self.board_nums[row][col] == 'F':
+            return
+        
+        if self.board_nums[row][col] == 'x':
+            for row in self.board:
+                for button in row:
+                    button.setEnabled(False)
+            for row in range(self.rows):
+                for col in range(self.cols):
+                    if self.board_nums[row][col] == 'x':
+                        self.board[row][col].setText('x')
+        else:
+            space.setEnabled(False)
+            num = self.board_nums[row][col]
+            if num > 0:
+                space.setText(str(num))
+    
+    def get_button_position(self, button):
+        pos = self.gridLayout.getItemPosition(self.gridLayout.indexOf(button))
+        return pos[0], pos[1]
+
 
 
     def flag(self, space):
@@ -111,7 +135,8 @@ class Logic(QMainWindow, Ui_MainWindow):
             self.input_row.setText('')
             self.input_col.setText('')
             self.input_bomb.setText('')
-
+            self.generate_nums()
+            self.hide_numbers()
 
 
         except ValueError:
@@ -122,6 +147,10 @@ class Logic(QMainWindow, Ui_MainWindow):
             # This too
             self.button_gen.setText('OOO')
 
+    def hide_numbers(self):
+        for row in range(self.rows):
+            for col in range(self.cols):
+                self.board[row][col].setText('')
 
 
     def generate_nums(self):
@@ -132,4 +161,31 @@ class Logic(QMainWindow, Ui_MainWindow):
                                         x 0 0
         If the space in the middle is an x then just continue.
         """
-        pass
+        for row in range(self.rows):
+            for col in range(self.cols):
+                if self.board_nums[row][col] != 'x':
+                    num_bombs = self.count_neighboring_bombs(row, col)
+                    self.board_nums[row][col] = num_bombs
+
+        self.update_button_texts()
+
+
+    def count_neighboring_bombs(self, row, col):
+    #THis shit was toxic bitch
+        bomb_count = 0
+
+        for i in range(-1, 2):
+            for j in range(-1, 2):
+                new_row, new_col = row + i, col + j
+
+                #Checks the neighboring space to see if its within the board boundaries
+                if 0 <= new_row < self.rows and 0 <= new_col < self.cols:
+                    if self.board_nums[new_row][new_col] == 'x':
+                        bomb_count += 1
+
+        return bomb_count
+
+    def update_button_texts(self):
+        for row in range(self.rows):
+            for col in range(self.cols):
+                self.board[row][col].setText(str(self.board_nums[row][col]))
